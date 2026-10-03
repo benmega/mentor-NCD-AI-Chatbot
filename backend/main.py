@@ -86,7 +86,7 @@ app.add_middleware(
         "http://192.168.1.103:5500",
         "*", # TODO remove before using in production
     ],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
