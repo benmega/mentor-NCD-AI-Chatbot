@@ -14,24 +14,29 @@ def main():
 
     print(f"[INFO] Using Python executable: {python_exe}")
 
+    # Set flag to spawn a new terminal window on Windows
+    creation_flags = subprocess.CREATE_NEW_CONSOLE if os.name == 'nt' else 0
+
     # 2. Start the Backend (FastAPI via Uvicorn)
-    print("[STARTING] Backend Server (Port 8000)...")
+    print("[STARTING] Backend Server (Port 8000)... (Opening in new window)")
     backend_process = subprocess.Popen(
         [python_exe, "-m", "uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"],
-        cwd="backend"
+        cwd="backend",
+        creationflags=creation_flags
     )
 
     # 3. Start the Frontend (Simple HTTP Server)
-    print("[STARTING] Frontend Server (Port 5500)...")
+    print("[STARTING] Frontend Server (Port 5500)... (Opening in new window)")
     frontend_process = subprocess.Popen(
-        [python_exe, "-m", "http.server", "5500", "--directory", "frontend"]
+        [python_exe, "-m", "http.server", "5500", "--directory", "frontend"],
+        creationflags=creation_flags
     )
 
     print("========================================")
-    print("All servers are running!")
+    print("All servers are running in separate terminal windows!")
     print("Local access (this computer): http://localhost:5500")
     print("Network access (other devices): Use your computer's local IP on port 5500")
-    print("Press Ctrl+C to stop both servers.")
+    print("Close the new windows or press Ctrl+C here to stop both servers.")
     print("========================================")
 
     # 4. Wait indefinitely until interrupted
